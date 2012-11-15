@@ -207,19 +207,9 @@ module Plist
     end
   end
 
-  require 'base64'
   class PData < PTag
     def to_ruby
-      data = Base64.decode64(text.gsub(/\s+/, ''))
-
-      begin
-        return Marshal.load(data)
-      rescue Exception => e
-        io = StringIO.new
-        io.write data
-        io.rewind
-        return io
-      end
+      CGI::unescapeHTML(text || '')
     end
   end
 end
